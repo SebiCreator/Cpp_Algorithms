@@ -7,8 +7,23 @@
 
 
 class LinkedList {
-
+public:
+    class Node
+    {
+    public:
+        Node* next;
+        int value;
+        Node(Node*,int);
+    };
+    LinkedList() = default;
+    void addNode(int);
+    void traverse();
+private:
+    Node* head;
 };
+
+
+
 
 
 #endif //ALGORITHMS_LINKEDLIST_H

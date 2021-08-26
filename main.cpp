@@ -1,27 +1,22 @@
 #include <iostream>
 #include "LinkedList.h"
 #include "Arrays.h"
+#include "Stack.h"
 #include <cstdio>
 #include <cstdint>
 
 int main() {
 
-    Array_* arr = new Array_();
-    arr->add(0);
-    arr->add(10);
-    arr->add(20);
-    arr->add(30);
+    Stack_* s = new Stack_();
+    s->push(1);
+    s->push(2);
+    s->push(3);
 
+    std::cout << s->pop() << std::endl;
+    std::cout << s->pop() << std::endl;
+    std::cout << s->pop() << std::endl;
+    std::cout << s->pop() << std::endl;
 
-    Array_* arr2 = new Array_();
-    arr2->add(1);
-    arr2->add(2);
-    arr2->add(3);
-
-
-    arr->append(*arr2);
-
-    std::cout << *arr << std::endl;
 
     return 0;
 }

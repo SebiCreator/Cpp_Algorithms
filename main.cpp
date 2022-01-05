@@ -2,21 +2,20 @@
 #include "LinkedList.h"
 #include "Arrays.h"
 #include "Stack.h"
+#include "Queue.h"
+#include "ArrayDict.h"
 #include <cstdio>
-#include <cstdint>
+#include <string>
+#include "Entry.h"
+
+
+
 
 int main() {
 
-    Stack_* s = new Stack_();
-    s->push(1);
-    s->push(2);
-    s->push(3);
+    auto ad = new ArrayDict<int,char>();
+    ad->insert(10,'e');
 
-    std::cout << s->pop() << std::endl;
-    std::cout << s->pop() << std::endl;
-    std::cout << s->pop() << std::endl;
-    std::cout << s->pop() << std::endl;
+    std::cout << ad->search(10) << std::endl;
 
-
-    return 0;
 }

@@ -35,7 +35,7 @@ public:
         if(this->isEmpty()){
             std::cout << "Stack is leer" << std::endl;
         }
-        int value = data[size--];
+        int value = data[--size];
         return value;
     }
     void swap(T val1,T val2){

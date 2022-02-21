@@ -112,6 +112,8 @@ public:
     bool isSorted(){
         return this->isSorted();
     }
+    /*friend std::istream operator>>(std::istream& is,T value){
+    }*/
     friend std::ostream& operator<< (std::ostream& os,Array_& arr){
         os << "{ ";
         for(int i=0; i < arr.size; i++)
@@ -131,6 +133,11 @@ public:
         this->sorted = false;
     }
 
+    int operator[](int idx){
+        return data[idx];
+    }
+
+
 private:
     void ensure_size(){
         if(size == current_len){
@@ -149,6 +156,7 @@ private:
     int current_len;
     bool sorted;
 };
+
 
 
 #endif //ALGORITHMS_ARRAYS_H

@@ -7,6 +7,7 @@
 
 #include <string>
 #include "Entry.h"
+#include <typeinfo>
 
 #define string std::string
 #define DEF_CAP 16
@@ -19,7 +20,7 @@ public:
     }
     void clear(){
         this->size = 0;
-        this->data = new Entry<K, V>[DEF_CAP]();
+        this->data = new Entry<K, V>[DEF_CAP];
         this->current_size = DEF_CAP;
     }
     V search(K key){
@@ -28,13 +29,16 @@ public:
            throw std::out_of_range("Index out of Bounds!");
        }
        //TODO: Why cant get value ?
-       return data[i].getValue();
+       return data[i].value;
     }
     void insert(K key ,V value){
         int i = search_key(key);
         if(i == -1){
-            data[size].key = value;
-            data[size].key = key;
+            //TODO: ERROR
+            auto tmp = new Entry<K,V>(key,value);
+            data[size] = *tmp;
+            //data[size].key = value;
+            //data[size].key = key;
             size++;
             return;
         }
@@ -46,7 +50,7 @@ public:
     V remove(K key){
         int i = search_key(key);
         if(i == -1){
-            return nullptr;
+            throw std::exception();
         }
         V old = data[i].value;
         for(int j=i; j < size-1; j++){
@@ -56,6 +60,10 @@ public:
     }
     int get_size(){
         return this->size;
+    }
+
+    V operator[](K key){
+        return search(key);
     }
 
 private:

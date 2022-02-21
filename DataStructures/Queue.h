@@ -22,14 +22,17 @@ public:
        Node<T> *tmp = new Node<T>(value);
        if(rear == nullptr){
            front = rear = tmp;
+           size++;
            return;
        }
        rear->next = tmp;
        rear = tmp;
+       size++;
     }
     T remove(){
         if(front == nullptr){
-            return nullptr;
+            std::cout << "Queue is empty" << std::endl;
+            throw std::exception();
         }
         Node<T> *tmp = front;
         T val = front->data;
@@ -38,6 +41,7 @@ public:
             rear = nullptr;
         }
         delete tmp;
+        size--;
         return val;
     }
     T peek(){

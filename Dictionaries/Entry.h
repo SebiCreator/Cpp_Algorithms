@@ -15,12 +15,6 @@ public:
        this->value = Value;
     }
     Entry(){}
-    V getValue(){
-        return value;
-    }
-    K getKey(){
-        return key;
-    }
 };
 
 

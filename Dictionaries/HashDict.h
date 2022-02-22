@@ -14,19 +14,38 @@
 
 
 
-template<typename T>
+template<typename K, typename V>
 class HashDict {
 public:
    HashDict(){
        clear();
    }
-   string search(int)
-   string insert(int,string);
-   string remove(int);
-   int get_size();
-   double getFill();
-   void clear();
+
+   V search(K key){
+           //TODO
+   }
+
+   V insert(K key, V value){
+          //TODO 
+   }
+
+   V remove(K key){
+          //TODO 
+   }
+
+   int get_size(){
+           //TODO
+   }
+
+   double getFill(){
+           //TODO
+   }
+
+   void clear(){
+           //TODO
+   }
 private:
+
     int hash(string key);
     void increaseSize();
     int modPow(int,int,int);

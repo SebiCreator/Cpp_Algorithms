@@ -5,7 +5,7 @@
 
 ### Data Structures
 
-* Simple Array
+* Simple Array 
 * Linked List
 * Queue
 * Binary Tree

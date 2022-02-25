@@ -21,15 +21,32 @@ public:
        clear();
    }
 
-   V search(K key){
-           //TODO
+   Entry<K,V>* search(K key){
+       int hash = this->hash(key);
+       for(int i=0; i < data[hash].get_size(); i++){
+           auto e = data[hash].get(i);
+           if(e.key == key){
+               std::cout << "D" << std::endl;
+                return &e;
+           }
+       }
+        std::cout << "C" << std::endl;
+       return nullptr;
    }
 
-   V insert(K key, V value){
-          auto *entry = new Entry<K,V>(key,value);
-          int hash = this->hash(key);
-          data[hash].add(*entry);
-          size++;
+   V* insert(K key, V value){
+       int hash = this->hash(key);
+       auto old = this->search(key);
+       if(old == nullptr){
+              std::cout << "A" << std::endl;
+              auto entry = new Entry<K,V>(key,value);
+              data[hash].add(*entry);
+              size++;
+              return nullptr;
+       } else {
+           std::cout << "B" << std::endl;
+           return &old->value;
+       }
    }
 
    V remove(K key){

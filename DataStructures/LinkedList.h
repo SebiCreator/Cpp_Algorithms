@@ -74,7 +74,7 @@ public:
         p->data = value;
         return old;
     }
-    T get(int idx){
+    T* get(int idx){
         /*if(idx < 0 || idx > size){
             std::cout << "Index out of Bounds" << std::endl;
             return nullptr;
@@ -83,7 +83,7 @@ public:
         for(int i=0; i < idx;i++){
            p = p->next;
         }
-        return p->data;
+        return &p->data;
     }
     T remove_idx(int idx){
         if(idx > size || idx < 0){

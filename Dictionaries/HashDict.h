@@ -22,31 +22,22 @@ public:
    }
 
    Entry<K,V>* search(K key){
-       int hash = this->hash(key);
-       for(int i=0; i < data[hash].get_size(); i++){
-           auto e = data[hash].get(i);
-           if(e.key == key){
-               std::cout << "D" << std::endl;
-                return &e;
-           }
-       }
-        std::cout << "C" << std::endl;
-       return nullptr;
+        int hash = this->hash(key);
+        for(int i=0; i < data[hash].get_size();i++){
+            if(data[hash].get(i)->key == key){
+                std::cout << "Found " << key << " Value: " << data[hash].get(i)->value <<  std::endl;
+                auto tmp = this->data[hash].get(i);
+                return data[hash].get(i);
+            }
+        }
    }
 
    V* insert(K key, V value){
-       int hash = this->hash(key);
-       auto old = this->search(key);
-       if(old == nullptr){
-              std::cout << "A" << std::endl;
-              auto entry = new Entry<K,V>(key,value);
-              data[hash].add(*entry);
-              size++;
-              return nullptr;
-       } else {
-           std::cout << "B" << std::endl;
-           return &old->value;
-       }
+      auto tmp = Entry<K,V>(key,value);
+      int hash = this->hash(key);
+      std::cout << "[INSERT]Key:" << key << ", Hash: " << hash << std::endl;
+      this->data[hash].add(tmp);
+      return nullptr;
    }
 
    V remove(K key){
@@ -76,7 +67,7 @@ public:
 
       int hash1 = key << 3;
       int hash2 = key >> 2;
-      int hash3 = key &= 0x55555;
+      int hash3 = key & 0x55555;
 
       return ((hash1 | hash2) ^ hash3) % data_len;
     }

@@ -7,6 +7,7 @@
 #include <string>
 #include "../DataStructures/LinkedList.h"
 #include "Entry.h"
+#include <cmath>
 
 #define DEF_CAP 23
 #define string std::string
@@ -25,7 +26,7 @@ public:
         int hash = this->hash(key);
         for(int i=0; i < data[hash].get_size();i++){
             if(data[hash].get(i)->key == key){
-                std::cout << "Found " << key << " Value: " << data[hash].get(i)->value <<  std::endl;
+                //std::cout << "Found " << key << " Value: " << data[hash].get(i)->value <<  std::endl;
                 return data[hash].get(i);
             }
 
@@ -38,15 +39,19 @@ public:
        auto *res = this->search(key);
 
        if(res == nullptr){
-           std::cout << "Nullptr: No Entry for this key" << std::endl;
+           if(this->getFill() > 2){
+               //std::cout << "[SIZE]Size will be increased" << std::endl;
+               this->increaseSize();
+           }
+           //std::cout << "Nullptr: No Entry for this key" << std::endl;
            auto tmp = Entry<K,V>(key,value);
            int hash = this->hash(key);
-           std::cout << "[INSERT]Key:" << key << ", Hash: " << hash << std::endl;
+           //std::cout << "[INSERT]Key:" << key << ", Hash: " << hash << std::endl;
            this->data[hash].add(tmp);
            this->size++;
            return;
        } else {
-           std::cout << "Key exists " << std::endl;
+           //std::cout << "Key exists " << std::endl;
            res->value = value;
            return;
        }
@@ -80,7 +85,12 @@ public:
    }
 
    double getFill(){
-          //TODO:
+        double total = 0;
+        for(int i = 0; i< data_len;i++){
+            total += this->data[i].get_size();
+        }
+        total /= data_len;
+        return total;
    }
 
    void clear(){
@@ -103,11 +113,77 @@ public:
       return ((hash1 | hash2) ^ hash3) % data_len;
     }
     void increaseSize(){
+        int oldsize = data_len;
+        data_len =  this->getNewSize();
+        auto *tmp = new LinkedList_<Entry<K,V>>[data_len];
+        for(int i=0; i < oldsize; i++){
+            for(int j=0; j < this->data[i].get_size();j++){
+                auto obj = this->data[i].get(j);
+                int hash = this->hash(obj->key);
+                tmp[hash].add(*obj);
+            }
+        }
+        auto *old = data;
+        data = tmp;
+        delete[] old;
+   }
+    int modPow(int a,int b,int c){
+      int res = 1;
+      for(int i=0; i < b; i++){
+          res *=a;
+          res%=c;
+      }
+      return res %c;
+   }
+    bool millerRabin(int num){
+       if(num <= 2){
+           return false;
+       }
+       if(num % 2 == 0){
+           return false;
+       }
+       int s = num - 1;
+       while(s % 2 == 0){
+           s /= 2;
+       }
+       srand(this->hash(data_len));
+       for(int i=0; i < 100; i++){
+           int r = rand();
+           int a = r % (num-1) + 1;
+           int tmp = s;
+           int mod = modPow(a,tmp,num);
+           while(tmp != num-1 && mod != 1  && mod != num -1){
+               mod = mod * mod %num;
+               tmp *= 2;
+           }
+           if(mod != num-1 && tmp % 2 == 0){
+               return false;
+           }
+       }
+       return true;
+
 
    }
-    int modPow(int,int,int);
-    bool millerRabin(int);
-    int getNewSize();
+    int getNewSize(){
+       int nsize = 2*data_len;
+       while(!this->millerRabin(nsize)){
+           nsize++;
+       }
+       return nsize;
+   }
+   double get_distribution(){
+       double mean = this->getFill();
+       double n = this->data_len;
+       double sum = 0.0;
+       for(int i=0; i < this->data_len;i++){
+           double x = this->data[i].get_size();
+           sum += std::pow((x-mean),2);
+       }
+       double term = 1.0 / (n - 1.0);
+       double res = term * sum;
+       res = std::sqrt(res);
+       return res;
+   }
     LinkedList_<Entry<K,V>> *data;
     int size;
     int data_len;

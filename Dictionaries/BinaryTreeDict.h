@@ -6,7 +6,7 @@
 #define CPP_ALGORITHMS_BINARYTREEDICT_H
 #include <cmath>
 
-#include <Queue.h>
+#include "DataStructures/Queue.h"
 
 
 template<typename K, typename V>

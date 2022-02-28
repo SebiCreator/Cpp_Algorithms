@@ -30,7 +30,7 @@ class LinkedList_ {
 public:
     LinkedList_(){
         this->clear();
-        std::cout << "[STATUS] " << "List created!" << std::endl;
+        //std::cout << "[STATUS] " << "List created!" << std::endl;
     }
     void clear(){
         this->size = 0;

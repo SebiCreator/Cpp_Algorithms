@@ -85,10 +85,24 @@ public:
         }
         return &p->data;
     }
-    T remove_idx(int idx){
+    int remove_idx(int idx){
         if(idx > size || idx < 0){
             std::cout << "Index out of Bounds" << std::endl;
-            return nullptr;
+            return -3;
+        }
+        if(this->size == 0){
+           return -2;
+        }
+        if(this->size == 1){
+            clear();
+            return -1;
+        }
+        if(idx == 0){
+            auto *p = head;
+            head = head->next;
+            delete p;
+            size--;
+            return 1;
         }
         Node<T> *p = head;
         for(int i=0; i < idx; i++){
@@ -98,7 +112,8 @@ public:
         p->next = p->next->next;
         T old = tmp->data;
         delete tmp;
-        return old;
+        size--;
+        return 0;
     }
      bool remove(T value){
         if(head == nullptr){

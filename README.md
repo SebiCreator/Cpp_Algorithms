@@ -18,7 +18,7 @@
 * [Array Dictionary](https://github.com/SebiCreator/Cpp_Algorithms/blob/main/Dictionaries/ArrayDict.h)
 * [Hash Dictionary](https://github.com/SebiCreator/Cpp_Algorithms/blob/main/Dictionaries/HashDict.h)
 * [Binary Tree Dictionary](https://github.com/SebiCreator/Cpp_Algorithms/blob/main/Dictionaries/BinaryTreeDict.h)
-* [AVL Binary Tree](https://github.com/SebiCreator/Cpp_Algorithms/blob/main/Dictionaries/Avl_Tree.h)
+* [AVL Binary Tree](https://github.com/SebiCreator/Cpp_Algorithms/blob/Dict/Dictionaries/Avl_Tree.h)
 * B Tree
 
 

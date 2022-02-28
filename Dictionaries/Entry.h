@@ -15,7 +15,12 @@ public:
        this->value = Value;
     }
     Entry(){}
+    friend std::ostream & operator<<(std::ostream& os, Entry<K,V>& e){
+       os << "(" << e.key << "," << e.value << ")" ;
+       return os;
+    }
 };
+
 
 
 #endif //CPP_ALGORITHMS_ENTRY_H

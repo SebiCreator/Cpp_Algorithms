@@ -37,23 +37,25 @@ public:
 
    }
 private:
+    template<typename F>
+    class Node{
+        Node();
+        Node(F Value){
+            this->value = value;
+            this->right = nullptr;
+            this->left = nullptr;
+        }
+        Node<F> *right;
+        Node<F> *left;
+        T value;
+   };
+
+
     Node<T> *root;
     int size;
 
 
 
-    template<typename F>
-    class Node{
-      Node();
-      Node(F Value){
-          this->value = value;
-          this->right = nullptr;
-          this->left = nullptr;
-      }
-      Node<F> *right;
-      Node<F> *left;
-      T value;
-   };
 
 };
 

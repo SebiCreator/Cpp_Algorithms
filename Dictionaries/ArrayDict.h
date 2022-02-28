@@ -10,7 +10,7 @@
 #include <typeinfo>
 
 #define string std::string
-#define DEF_CAP 16
+#define DEF_CAP_A 16
 
 template<typename K,typename V>
 class ArrayDict {
@@ -20,8 +20,8 @@ public:
     }
     void clear(){
         this->size = 0;
-        this->data = new Entry<K, V>[DEF_CAP];
-        this->current_size = DEF_CAP;
+        this->data = new Entry<K, V>[DEF_CAP_A];
+        this->current_size = DEF_CAP_A;
     }
     V search(K key){
        int i = search_key(key);

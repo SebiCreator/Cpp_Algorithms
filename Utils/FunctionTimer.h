@@ -1,0 +1,8 @@
+//
+// Created by Sebastian Kaeser on 01.03.22.
+//
+
+#ifndef CPP_ALGORITHMS_FUNCTIONTIMER_H
+#define CPP_ALGORITHMS_FUNCTIONTIMER_H
+
+#endif //CPP_ALGORITHMS_FUNCTIONTIMER_H

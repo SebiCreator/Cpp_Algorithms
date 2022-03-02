@@ -15,19 +15,16 @@ public:
     Array_(){
         this->clear();
     }
-    Array_(Array_& arr){
-        this->append(arr);
-    }
     void clear(){
         this->size = 0;
         this->data = new T[DEF_CAPACITY];
         this->current_len = DEF_CAPACITY;
         this->sorted = false;
     }
-    int get_size(){
+    int get_size() const {
         return this->size;
     }
-    bool isEmpty(){
+    bool isEmpty() const {
         return this->size == 0;
     }
     void add(T value){
@@ -44,18 +41,45 @@ public:
         sorted = false;
         return old;
     }
-    T get(int idx){
+    T* get (int idx) const {
         if(idx > size || idx < 0){
-            throw std::out_of_range("Index out of Bounds!");
+            std::cout << "UPS";
+            return nullptr;
         }
-        return data[idx];
+        return &data[idx];
     }
-    T remove(int idx){
+    T remove_idx(int idx){
         if(idx < 0 || idx > size){
             throw std::out_of_range("Index out of Bounds!");
         }
 
         T old = data[idx];
+        for(int i=size-1; i > idx; i--){
+            data[i-1] = data[i];
+        }
+
+        size--;
+        sorted = false;
+        return old;
+
+    }
+
+    T& remove_val(T val){
+
+        int idx = -1;
+        T old;
+
+        for(int i=0; i< current_len; i++){
+            if(data[i] == val){
+                idx = i;
+                old = data[i];
+            }
+        }
+
+        if(idx == -1){
+            return nullptr;
+        }
+
         for(int i=size-1; i > idx; i--){
             data[i-1] = data[i];
         }
@@ -74,7 +98,7 @@ public:
         return false;
     }
     bool findBin(T value){
-        if(sorted == false){
+        if(!sorted){
             std::cout << "List must be sorted to search binary" << std::endl;
             return false;
         }
@@ -133,9 +157,94 @@ public:
         this->sorted = false;
     }
 
-    int operator[](int idx){
-        return data[idx];
+//////////////////////   OPERATORS
+
+
+    int& operator [](int i) { return *(data[i]); }
+
+    void operator+=(T e){
+       this->add(e);
     }
+
+    Array_<T> operator+(T e){
+        Array_<T> tmp = Array_<T>(*this);
+        tmp += e;
+        return tmp;
+    }
+
+    void operator*(int scalar){
+        for(int i=0; i < current_len; i++){
+            data[i] = data[i] * scalar;
+        }
+    }
+
+    void operator-(T e){
+       this->remove_val(e);
+    }
+
+    bool operator==(Array_<T>& arr2){
+        for(int i=0; i < current_len; i++){
+            if(arr2.get(i) != this->get(i)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool operator!=(Array_<T>& arr2){
+        for(int i=0; i < current_len; i++){
+            if(arr2.get(i) != this->get(i)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+//////////////////////   RULE OF FIVE
+
+    ~Array_(){
+        delete data;
+    }
+
+    Array_<T>(const Array_<T>& arr2){
+        this->clear();
+        for(int i=0; i < arr2.current_len; i++){
+            auto arg = arr2.data[i];
+            this->add(arg);
+        }
+        this->size = arr2.size;
+    }
+    Array_<T>(Array_&& arr){
+        this->clear();
+        this->size = arr.size;
+        for(int i=0; i< arr.current_len; i++){
+            auto arg = arr.data[i];
+            this->add(arg);
+        }
+    }
+
+    Array_<T>& operator=(const Array_<T>& arr){
+        std::cout << "Case B" << std::endl;
+        this->clear();
+        for(int i=0; i< arr.current_len; i++){
+            auto arg = arr.data[i];
+            this->add(arg);
+        }
+        this->size = arr.size;
+        return *this;
+    }
+    Array_<T>& operator=(Array_<T>&& arr) noexcept {
+        std::cout << "Case A" << std::endl;
+        this->clear();
+        for(int i=0; i< arr.current_len; i++){
+            auto arg = arr.data[i];
+            this->add(arg);
+        }
+        this->size = arr.size;
+        return *this;
+    }
+
+
 
 
 private:

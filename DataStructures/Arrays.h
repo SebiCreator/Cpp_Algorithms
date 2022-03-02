@@ -148,6 +148,10 @@ public:
         os << arr.size << std::endl;
         return os;
     }
+
+
+
+
     void append(Array_& arr){
         for(int i=0; i < arr.size; i++)
         {
@@ -160,7 +164,7 @@ public:
 //////////////////////   OPERATORS
 
 
-    int& operator [](int i) { return *(data[i]); }
+    T* operator [](int i) { return this->get(i); }
 
     void operator+=(T e){
        this->add(e);
@@ -178,11 +182,22 @@ public:
         }
     }
 
-    void operator-(T e){
+    void operator-=(T e){
        this->remove_val(e);
     }
 
+    Array_<T> operator-(T e){
+        Array_<T> tmp = Array_<T>(*this);
+        tmp -= e;
+        return tmp;
+    }
+
+
+
     bool operator==(Array_<T>& arr2){
+        if(this == &arr2){
+            return true;
+        }
         for(int i=0; i < current_len; i++){
             if(arr2.get(i) != this->get(i)){
                 return false;
@@ -192,6 +207,9 @@ public:
     }
 
     bool operator!=(Array_<T>& arr2){
+        if(this == &arr2){
+            return true;
+        }
         for(int i=0; i < current_len; i++){
             if(arr2.get(i) != this->get(i)){
                 return true;
@@ -199,6 +217,7 @@ public:
         }
         return false;
     }
+
 
 //////////////////////   RULE OF FIVE
 
@@ -224,7 +243,6 @@ public:
     }
 
     Array_<T>& operator=(const Array_<T>& arr){
-        std::cout << "Case B" << std::endl;
         this->clear();
         for(int i=0; i< arr.current_len; i++){
             auto arg = arr.data[i];
@@ -234,7 +252,6 @@ public:
         return *this;
     }
     Array_<T>& operator=(Array_<T>&& arr) noexcept {
-        std::cout << "Case A" << std::endl;
         this->clear();
         for(int i=0; i< arr.current_len; i++){
             auto arg = arr.data[i];

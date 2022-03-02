@@ -6,6 +6,8 @@
 #define ALGORITHMS_LINKEDLIST_H
 #include <iostream>
 
+#define ERR 0xf32
+
 
 
 template<typename T>
@@ -36,15 +38,16 @@ public:
         this->size = 0;
         this->head = nullptr;
     }
-    int get_size(){
+    int get_size() const {
         return this->size;
     }
-    bool isEmpty(){
+    bool isEmpty() const{
         return this->size == 0;
     }
     void add(T value){
         if(head == nullptr){
             head = new Node<T>(value, nullptr);
+            //std::cout << "Allocated new Node Addr: " << head << std::endl;
             size++;
             return;
         }
@@ -53,6 +56,7 @@ public:
             p = p->next;
         }
         p->next = new Node<T>(value,nullptr);
+        //std::cout << "Allocated new Node Addr: " << p->next << std::endl;
         size++;
 
     }
@@ -74,11 +78,10 @@ public:
         p->data = value;
         return old;
     }
-    T* get(int idx){
-        /*if(idx < 0 || idx > size){
-            std::cout << "Index out of Bounds" << std::endl;
+    T* get(int idx) const {
+        if(idx < 0 || idx > size){
             return nullptr;
-        }*/
+        }
         Node<T> *p = head;
         for(int i=0; i < idx;i++){
            p = p->next;
@@ -120,7 +123,7 @@ public:
             return false;
         }
         Node<T> *p = head;
-        while(p != nullptr){
+        while(p->next != nullptr){
             if(p->next->data == value){
                 Node<T> *tmp = p->next;
                 p->next = p->next->next;
@@ -150,6 +153,114 @@ public:
         ll.add(x);
         return is;
     }
+
+
+    ////////////////////// OPERATORS
+
+    T* operator[](int idx){
+        return this->get(idx);
+    }
+
+    void operator+=(T e){
+        this->add(e);
+    }
+
+
+    LinkedList_<T> operator+(T e){
+        auto tmp = LinkedList_<T>(*this);
+        tmp.add(e);
+        return tmp;
+    }
+
+    void operator-=(int e){
+        this->remove_idx(e);
+    }
+
+
+    LinkedList_<T> operator-(T e){
+        auto tmp = LinkedList_<T>(*this);
+        tmp.remove(e);
+        return tmp;
+    }
+
+
+
+    bool operator==(LinkedList_<T>& arr2){
+        if(this == &arr2){
+            return true;
+        }
+        for(int i=0; i < size; i++){
+            if(*(arr2.get(i)) != *(this->get(i))){
+                std::cout << *(this->get(i)) << " != " << arr2[i] << std::endl;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool operator!=(LinkedList_& arr2){
+        if(this == &arr2){
+            return false;
+        }
+        for(int i=0; i < size; i++){
+            if(arr2.get(i) != this->get(i)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    ////////////////////// RULE OF FIVE
+
+    ~LinkedList_(){
+        Node<T>* tmp;
+        while(head != nullptr){
+            tmp = head;
+            head = head->next;
+            //std::cout << "Free Node Addr: " << tmp << std::endl;
+            delete tmp;
+        }
+    }
+
+    LinkedList_(const LinkedList_& ll){
+        this->clear();
+        for(int i=0; i < ll.size; i++){
+            auto obj =  *(ll.get(i));
+            this->add(obj);
+        }
+    }
+
+    LinkedList_(LinkedList_&& ll){
+       this->clear();
+       for(int i=0; i< ll.size; i++){
+           auto obj = *(ll.get(i));
+           this->add(obj);
+       }
+    }
+
+    LinkedList_& operator=(const LinkedList_& ll){
+        this->clear();
+        for(int i=0; i< ll.size; i++){
+            auto obj = *(ll.get(i));
+            this->add(obj);
+        }
+        return *this;
+    }
+
+    LinkedList_& operator=(LinkedList_&& ll){
+        this->clear();
+        for(int i=0; i< ll.size; i++){
+            auto obj = *(ll.get(i));
+            this->add(obj);
+        }
+        return *this;
+    }
+
+
+
+
 private:
     Node<T>* head;
     int size;

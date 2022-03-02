@@ -9,8 +9,7 @@
 #include "Entry.h"
 #include <cmath>
 
-#define DEF_CAP 23
-#define string std::string
+#define DEF_CAP 5
 
 
 
@@ -99,19 +98,116 @@ public:
            data = new LinkedList_<Entry<K,V>>[data_len];
    }
 
+   bool containsKey(K key){
+       if (this->search(key) == nullptr){
+           return false;
+       }
+       return true;
+   }
+
+   /*int hash = this->hash(key);
+   for(int i=0; i < data[hash].get_size();i++){
+       if(data[hash].get(i)->key == key){
+           //std::cout << "Found " << key << " Value: " << data[hash].get(i)->value <<  std::endl;
+           return data[hash].get(i);
+       }
+
+   }*/
+
+   LinkedList_<K> getKeySet(){
+       auto *ll = new LinkedList_<K>();
+
+       for(int i=0; i< data_len; i++){
+           LinkedList_<Entry<K,V>>* tmp =  &data[i];
+           for(int j=0; j < tmp->get_size(); j++){
+               auto obj = tmp->get(j)->key;
+               ll->add(obj);
+           }
+       }
+       return *ll;
+   }
 
 
+   ////////////////////////////// OPERATORS
+
+   Entry<K,V>& operator[](K key){
+       return *(this->search(key));
+   }
+
+
+
+    ////////////////////////////// RULE OF FIVE
+
+    ~HashDict(){
+       //TODO:
+   }
+
+   HashDict(const HashDict& ll){
+       this->clear();
+       for(int i=0; i < data_len; i++){
+           auto obj = ll.data[i];
+           for(int j=0; j < obj.get_size(); j++){
+               K key = obj.get(j)->key;
+               V value = obj.get(j)->value;
+               this->insert(key,value);
+           }
+       }
+   }
+
+   HashDict(HashDict&& ll){
+       this->clear();
+       for(int i=0; i < data_len; i++){
+           auto obj = ll.data[i];
+           for(int j=0; j < obj.get_size(); j++){
+               K key = obj.get(j)->key;
+               V value = obj.get(j)->value;
+               this->insert(key,value);
+           }
+       }
+   }
+
+   HashDict& operator=(const HashDict& ll){
+       this->clear();
+       for(int i=0; i < data_len; i++){
+           auto obj = ll.data[i];
+           for(int j=0; j < obj.get_size(); j++){
+               K key = obj.get(j)->key;
+               V value = obj.get(j)->value;
+               this->insert(key,value);
+           }
+       }
+       return *this;
+   }
+
+   HashDict& operator=(HashDict&& ll){
+       this->clear();
+       for(int i=0; i < data_len; i++){
+           auto obj = ll.data[i];
+           for(int j=0; j < obj.get_size(); j++){
+               K key = obj.get(j)->key;
+               V value = obj.get(j)->value;
+               this->insert(key,value);
+           }
+       }
+       return *this;
+   }
 
 
 public:
-     int hash(K key){
+     int hash(K Key){
 
-      int hash1 = key << 3;
-      int hash2 = key >> 2;
-      int hash3 = key & 0x55555;
 
-      return ((hash1 | hash2) ^ hash3) % data_len;
+       std::hash<K>hasher;
+       int key =  (hasher(Key) % data_len);
+       int hash1 = key << 3;
+       int hash2 = key >> 2;
+       int hash3 = key & 0x55555;
+
+       return ((hash1 | hash2) ^ hash3) % data_len;
+
     }
+
+
     void increaseSize(){
         int oldsize = data_len;
         data_len =  this->getNewSize();
@@ -146,7 +242,7 @@ public:
        while(s % 2 == 0){
            s /= 2;
        }
-       srand(this->hash(data_len));
+       srand(time(NULL));
        for(int i=0; i < 100; i++){
            int r = rand();
            int a = r % (num-1) + 1;

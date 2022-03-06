@@ -23,6 +23,16 @@ struct Node
         this->data = val;
         this->next = nullptr;
     }
+
+    bool operator!=(Node<T>& o){
+        if(this == &o){
+            return false;
+        }
+        if(this->data == o.data){
+            return false;
+        }
+        return true;
+    }
 };
 
 
@@ -79,14 +89,31 @@ public:
         return old;
     }
     T* get(int idx) const {
-        if(idx < 0 || idx > size){
+        if(idx > size){
             return nullptr;
         }
+        if (idx < 0){
+            idx = size + idx;
+        }
         Node<T> *p = head;
-        for(int i=0; i < idx;i++){
+        for(int i=0; i < idx-1;i++){
            p = p->next;
         }
         return &p->data;
+    }
+
+    Node<T>* getElement(int idx) const {
+        if(idx > size){
+            return nullptr;
+        }
+        if (idx < 0){
+            idx = size + idx;
+        }
+        Node<T> *p = head;
+        for(int i=0; i < idx-1;i++){
+            p = p->next;
+        }
+        return p;
     }
     int remove_idx(int idx){
         if(idx > size || idx < 0){
@@ -257,6 +284,51 @@ public:
         }
         return *this;
     }
+
+    class iterator{
+    public:
+        iterator(LinkedList_<T>* ll){
+           this->curr = ll->head;
+        }
+
+        iterator(Node<T>* node){
+            this->curr = node;
+        }
+        iterator(){
+            this->curr = nullptr;
+        }
+
+        friend class LinkedList_<T>;
+
+        iterator operator++(){
+            this->curr = this->curr->next;
+            return *this;
+        }
+
+        bool operator!=(const iterator& it) const {
+            return this->curr != it.curr;
+        }
+
+        Node<T>* operator*() const{
+            return this->curr;
+        }
+
+    private:
+        Node<T>* curr;
+    };
+
+
+    iterator begin(){
+        auto e = iterator(this->head);
+        return e;
+    }
+
+    iterator end(){
+       auto e = iterator();
+       return e;
+    }
+
+
 
 
 

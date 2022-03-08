@@ -96,7 +96,7 @@ public:
             idx = size + idx;
         }
         Node<T> *p = head;
-        for(int i=0; i < idx-1;i++){
+        for(int i=0; i < idx;i++){
            p = p->next;
         }
         return &p->data;
@@ -152,7 +152,7 @@ public:
         Node<T> *p = head;
         while(p->next != nullptr){
             if(p->next->data == value){
-                Node<T> *tmp = p->next;
+                auto *tmp = p->next;
                 p->next = p->next->next;
                 delete tmp;
                 return true;
@@ -246,7 +246,6 @@ public:
         while(head != nullptr){
             tmp = head;
             head = head->next;
-            //std::cout << "Free Node Addr: " << tmp << std::endl;
             delete tmp;
         }
     }
@@ -327,8 +326,6 @@ public:
        auto e = iterator();
        return e;
     }
-
-
 
 
 

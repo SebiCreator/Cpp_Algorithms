@@ -33,7 +33,7 @@ public:
         this->n_sec += endT.tv_nsec - startT.tv_nsec;
     }
     void print(){
-        printf("Current Time:\n{ Sec: %ld, nsec: %lu }",sec,n_sec);
+        printf("\nCurrent Time:\n{ Sec: %ld, nsec: %lu }\n",sec,n_sec);
     }
     void printsec(){
        printf("Current Time:\nSeconds: %ld\n",sec);

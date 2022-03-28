@@ -5,11 +5,8 @@
 #ifndef CPP_ALGORITHMS_ARRAYDICT_H
 #define CPP_ALGORITHMS_ARRAYDICT_H
 
-#include <string>
 #include "Entry.h"
 #include <typeinfo>
-
-#define string std::string
 #define DEF_CAP_A 16
 
 template<typename K,typename V>

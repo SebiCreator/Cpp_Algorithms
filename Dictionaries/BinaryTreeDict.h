@@ -32,7 +32,7 @@ public:
        root = nullptr;
        size = 0;
    }
-   V search(K key){
+   bNode<K,V>* search(K key){
      return searchR(key,root);
    }
    void insert(K key, V value){
@@ -177,16 +177,15 @@ private:
        }
        return p;
    }
-   V searchR(K key, bNode<K,V>* p){
+   bNode<K,V>* searchR(K key, bNode<K,V>* p){
        if(p == nullptr){
-           std::cout << "[ERROR] No Such Element" << std::endl;
-           exit(1);
+           return nullptr;
        } else if(key < p->key){
            return searchR(key,p->left);
        } else if(key > p->key){
            return searchR(key,p->right);
        } else {
-           return p->value;
+           return p;
        }
    }
 };

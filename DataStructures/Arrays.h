@@ -15,6 +15,14 @@ public:
     Array_(){
         this->clear();
     }
+    Array_(T list[]){
+        this->clear();
+        int idx = 0;
+        T token = list[idx];
+        while(token != NULL){
+           this->add(token);
+        }
+    }
     void clear(){
         this->size = 0;
         this->data = new T[DEF_CAPACITY];

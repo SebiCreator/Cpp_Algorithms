@@ -92,7 +92,7 @@ public:
     void clear() {
         size = 0;
         data_len = DEF_CAP;
-        data = new LinkedList_<Entry<K, V>>[data_len];
+        data = new LinkedList_<Entry<K, V> >[data_len];
     }
 
     bool containsKey(K key) {
@@ -139,7 +139,7 @@ public:
     ////////////////////////////// RULE OF FIVE
 
     ~HashDict() {
-        //TODO:
+       delete[] data;
     }
 
     HashDict(const HashDict &ll) {
@@ -204,7 +204,7 @@ public:
     void increaseSize() {
         int oldsize = data_len;
         data_len = this->getNewSize();
-        auto *tmp = new LinkedList_<Entry<K, V>>[data_len];
+        auto *tmp = new LinkedList_<Entry<K, V> >[data_len];
         for (int i = 0; i < oldsize; i++) {
             for (int j = 0; j < this->data[i].get_size(); j++) {
                 auto obj = this->data[i].get(j);
@@ -266,7 +266,7 @@ public:
 
     Entry<K,V>* getFirst(){
         for(int i=0; i < data_len; i++){
-            LinkedList_<Entry<K,V>>* cl = &this->data[i];
+            LinkedList_<Entry<K,V> >* cl = &this->data[i];
             if(cl->get_size() != 0){
                 return cl->get(0);
             }
@@ -276,7 +276,7 @@ public:
 
     Entry<K,V>* getLast(){
         for(int i=data_len; i > 0; i--){
-            LinkedList_<Entry<K,V>>* cl = &this->data[i];
+            LinkedList_<Entry<K,V> >* cl = &this->data[i];
             if(cl->get_size() != 0){
                 return cl->get(-1);
             }
@@ -298,7 +298,7 @@ public:
         return res;
     }
 
-    LinkedList_<Entry<K, V>> *data;
+    LinkedList_<Entry<K, V> > *data;
     int size;
     int data_len;
 
@@ -338,7 +338,7 @@ public:
             this->e_idx = 0;
             this->dict = &hd;
             for (int i = 0; i < hd.data_len; i++) {
-                LinkedList_<Entry<K, V>> &cl = hd.data[i];
+                LinkedList_<Entry<K, V> > &cl = hd.data[i];
                 this->l_idx = i;
                 if (cl.get_size() != 0) {
                     this->current = cl.get(e_idx);
@@ -359,7 +359,7 @@ public:
 
         iterator operator++() {
 
-            LinkedList_<Entry<K,V>> *cl = &dict->data[l_idx];
+            LinkedList_<Entry<K,V> > *cl = &dict->data[l_idx];
 
                 while(cl->get_size() == e_idx){
                     cl = &dict->data[++l_idx];
